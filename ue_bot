@@ -2,6 +2,7 @@ local urls = {
     "https://raw.githubusercontent.com/Ekba17/extra/refs/heads/main/extra",
     "https://raw.githubusercontent.com/Ekba17/SniperBot/refs/heads/main/script%202%20stand",
     "https://raw.githubusercontent.com/Ekba17/Soundoad/refs/heads/main/MusicPlayer",
+    "https://raw.githubusercontent.com/Ekba17/counter/refs/heads/main/counter",
 }
 
 for _, u in ipairs(urls) do
