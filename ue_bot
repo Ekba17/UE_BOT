@@ -1,60 +1,27 @@
-local executor = identifyexecutor()
-
-if executor == "Solara" or executor == "Xeno" or executor == "Delta" or executor == "Luna" then
-    game:GetService("Players")["LocalPlayer"]:Kick("wtf is that excuter how did you even mange to load unnamed?!")
-    return
-end
-
--- Paste up to 3 raw script URLs in the `urls` table and run this.
+-- Paste up to 3 raw script URLs here (very minimal)
 local urls = {
     "https://raw.githubusercontent.com/Ekba17/extra/refs/heads/main/extra",
     "https://raw.githubusercontent.com/Ekba17/SniperBot/refs/heads/main/script%202%20stand",
     "https://raw.githubusercontent.com/Ekba17/Soundoad/refs/heads/main/MusicPlayer",
 }
 
-local function http_get(u)
-    if type(syn) == "table" and syn.request then
-        local ok, res = pcall(syn.request, {Url = u, Method = "GET"})
-        if ok and res and (res.Body or res.body) then return res.Body or res.body end
-    end
-    if request then
-        local ok, res = pcall(request, {Url = u, Method = "GET"})
-        if ok and res and (res.Body or res.body) then return res.Body or res.body end
-    end
-    if http_request then
-        local ok, res = pcall(http_request, {Url = u, Method = "GET"})
-        if ok and res and (res.Body or res.body) then return res.Body or res.body end
-    end
-    local ok, HttpService = pcall(function() return game:GetService("HttpService") end)
-    if ok and HttpService and HttpService.GetAsync then
-        local s, b = pcall(function() return HttpService:GetAsync(u) end)
-        if s and b then return b end
-    end
-    if game and game.HttpGet then
-        local s, b = pcall(function() return game:HttpGet(u) end)
-        if s and b then return b end
-    end
-    return nil, "no-http-method"
-end
-
-for i = 1, math.min(3, #urls) do
-    local u = urls[i]
-    if u and u ~= "" then
-        local body, err = http_get(u)
-        if not body then
-            warn(("URL %d fetch failed: %s"):format(i, tostring(err)))
+for _, u in ipairs(urls) do
+    if type(u) == "string" and u ~= "" then
+        local body
+        if request then
+            local ok,res = pcall(request, {Url = u, Method = "GET"})
+            body = ok and (res.Body or res.body or res)
+        elseif type(syn) == "table" and syn.request then
+            local ok,res = pcall(syn.request, {Url = u, Method = "GET"})
+            body = ok and (res.Body or res.body or res)
         else
-            local fn, loadErr = loadstring(body)
-            if not fn then
-                warn(("URL %d load error: %s"):format(i, tostring(loadErr)))
-            else
-                local ok, runErr = pcall(fn)
-                if not ok then
-                    warn(("URL %d runtime error: %s"):format(i, tostring(runErr)))
-                else
-                    print(("URL %d executed"):format(i))
-                end
-            end
+            local ok, b = pcall(function() return game:HttpGet(u) end)
+            body = ok and b
+        end
+
+        if body then
+            local fn = loadstring(body)
+            if fn then pcall(fn) end
         end
     end
 end
