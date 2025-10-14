@@ -1,14 +1,27 @@
 local urls = {
-    "https://raw.githubusercontent.com/Ekba17/extra/refs/heads/main/extra",
-    "https://raw.githubusercontent.com/Ekba17/SniperBot/refs/heads/main/script%202%20stand",
-    "https://raw.githubusercontent.com/Ekba17/Soundoad/refs/heads/main/MusicPlayer",
-    "https://raw.githubusercontent.com/Ekba17/counter/refs/heads/main/counter",
+    "https://raw.githubusercontent.com/Ekba17/extra/main/extra",
+    "https://raw.githubusercontent.com/Ekba17/SniperBot/main/script%202%20stand",
+    "https://raw.githubusercontent.com/Ekba17/Soundoad/main/MusicPlayer",
+    "https://raw.githubusercontent.com/Ekba17/counter/main/counter",
 }
 
 for _, u in ipairs(urls) do
     task.spawn(function()
-        pcall(function()
-            loadstring(game:HttpGet(u))()
+        local ok, err = pcall(function()
+            -- fetch
+            local body = game:HttpGet(u) -- many executors also accept (u, true) to bypass cache
+            assert(body and #body > 0, "empty response")
+
+            -- compile
+            local fn, loadErr = loadstring(body)
+            assert(fn, "loadstring error: " .. tostring(loadErr))
+
+            -- run
+            fn()
         end)
+
+        if not ok then
+            warn(("Failed to load %s : %s"):format(u, tostring(err)))
+        end
     end)
 end
