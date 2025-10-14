@@ -8,15 +8,12 @@ local urls = {
 for _, u in ipairs(urls) do
     task.spawn(function()
         local ok, err = pcall(function()
-            -- fetch
             local body = game:HttpGet(u) -- many executors also accept (u, true) to bypass cache
             assert(body and #body > 0, "empty response")
 
-            -- compile
             local fn, loadErr = loadstring(body)
             assert(fn, "loadstring error: " .. tostring(loadErr))
 
-            -- run
             fn()
         end)
 
@@ -25,3 +22,5 @@ for _, u in ipairs(urls) do
         end
     end)
 end
+
+--dont worry the counter is just for me to know how many excutions got for my script so i can know if i should update it more =)
