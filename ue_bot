@@ -1,6 +1,4 @@
 local urls = {
-    "https://raw.githubusercontent.com/Ekba17/extra/main/extra",
-    "https://raw.githubusercontent.com/Ekba17/SniperBot/main/script%202%20stand",
     "https://raw.githubusercontent.com/Ekba17/Soundoad/main/MusicPlayer",
     "https://raw.githubusercontent.com/Ekba17/counter/main/counter",
 }
