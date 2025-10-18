@@ -21,4 +21,4 @@ for _, u in ipairs(urls) do
     end)
 end
 
---dont worry the counter is just for me to know how many excutions got for my script so i can know if i should update it more =)
+api:notify("outdated Please get the new version at https://discord.gg/tyyFudDYem", 60);
